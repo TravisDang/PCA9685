@@ -17,6 +17,9 @@ lib$(NAME).so: lib$(NAME).so.$(VERSION)
 
 lib$(NAME).so.$(VERSION): $(NAME).o I2C.o
 	$(CXX) -pg -shared -Wl,-soname,lib$(NAME).so.$(MAJOR) $^ -o $@
+
+AUV_pwmtest: lib$(NAME).so AUV_pwmtest.cpp
+	g++ --std=c++11  AUV_pwmtest.cpp -L . -l PCA9685 -o AUV_pwmtest
 	
 clean:
 	$(RM) *.o *.so*
