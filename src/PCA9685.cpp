@@ -75,7 +75,10 @@ void PCA9685::setPWMFreq(int freq) {
  \param value 0-4095 value for PWM
  */
 void PCA9685::setPWM(uint8_t led, int value) {
-	setPWM(led, 0, value);
+	double tick_time = (1/250) / 4096; //Taking PWM Period and dividing by timer size to find time per tick
+	double off_value = (value / tick_time / pow(10,6)) - 1; //Divide desired PWM width by time_tick to find out off_tick value
+								//Divide by pow to get value in s
+	setPWM(led, 0, (int) off_value); //Cast ticks to int bc can't be decimal
 }
 //! PWM a single channel with custom on time
 /*!
